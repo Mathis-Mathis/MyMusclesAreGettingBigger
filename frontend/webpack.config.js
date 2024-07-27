@@ -1,32 +1,56 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+    const path = require('path')
+    const autoprefixer = require('autoprefixer')
+    const HtmlWebpackPlugin = require('html-webpack-plugin')
 
-module.exports = {
-    entry: './src/index.js',
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js',
-    },
-    module: {
-        rules: [
-            {
-                test: /\.css$/i,
-                use: ['style-loader', 'css-loader'],
+    module.exports = {
+        mode: 'development',
+        entry: './src/js/main.js',
+        output: {
+            filename: 'main.js',
+            path: path.resolve(__dirname, 'dist')
+        },
+        devServer: {
+            static: path.resolve(__dirname, 'dist'),
+            port: 8080,
+            hot: true
+        },
+        plugins: [
+            new HtmlWebpackPlugin({ template: './src/index.html' })
+        ],
+        module: {
+            rules: [
+                {
+                    test: /\.(scss)$/,
+                    use: [
+                        {
+                            loader: 'style-loader'
+                        },
+                        {
+                            loader: 'css-loader'
+                        },
+                        {
+                            loader: 'postcss-loader',
+                            options: {
+                                postcssOptions: {
+                                    plugins: [
+                                        autoprefixer
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            loader: 'sass-loader'
+                        }
+                    ]
+                }
+            ]
+        },
+        ignoreWarnings: [
+            (warning) => {
+                return warning.message && warning.message.includes('Sass\'s behavior for declarations');
+            },
+            (warning) => {
+                return warning.message && warning.message.includes('repetitive deprecation warnings omitted');
             },
         ],
-    },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: './dist/index.html',
-            filename: 'index.html',
-        }),
-    ],
-    devServer: {
-        static: {
-            directory: path.join(__dirname, 'dist'),
-        },
-        compress: true,
-        port: 9000,
-    },
-    mode: 'development',
-};
+    }
