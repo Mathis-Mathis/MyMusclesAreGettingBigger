@@ -2,9 +2,12 @@ import os
 import unittest
 from flask_migrate import Migrate
 from app.main import create_app, db
+from app.main.model import User
 
-# Initialize the app with the appropriate configuration
+print("Starting the application...")
 app = create_app(os.getenv('BOILERPLATE_ENV') or 'dev')
+print("Application created.")
+
 
 # Set up Flask-Migrate
 migrate = Migrate(app, db)

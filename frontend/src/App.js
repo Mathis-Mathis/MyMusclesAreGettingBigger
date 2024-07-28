@@ -7,7 +7,7 @@ import Exercices from "./components/exercices/exercices";
 function Home() {
     return (
         <div className="centered-container">
-            <h1>Exercices</h1>
+            <h1>Home</h1>
         </div>
     );
 }
